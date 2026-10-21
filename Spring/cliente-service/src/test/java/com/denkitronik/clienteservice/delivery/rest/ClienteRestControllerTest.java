@@ -107,6 +107,18 @@ class ClienteRestControllerTest {
     }
 
     @Test
+    @DisplayName("GET /clientes/regiones → 200 y devuelve las regiones")
+    void listarRegiones_debeRetornar200ConRegiones() throws Exception {
+        Region region = cliente.getRegion();
+        when(clienteService.findAllRegiones()).thenReturn(List.of(region));
+
+        mockMvc.perform(get(BASE + "/clientes/regiones"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(4))
+                .andExpect(jsonPath("$[0].nombre").value("Europa"));
+    }
+
+    @Test
     @DisplayName("POST /clientes válido → 201 Created")
     void crearCliente_valido_debeRetornar201() throws Exception {
         when(clienteService.save(any(Cliente.class))).thenReturn(cliente);

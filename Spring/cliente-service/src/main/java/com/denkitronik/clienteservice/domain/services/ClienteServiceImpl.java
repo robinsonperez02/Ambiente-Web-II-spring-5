@@ -41,6 +41,8 @@ public class ClienteServiceImpl implements IClienteService {
     @Override
     @Transactional
     public Cliente save(Cliente cliente) {
+        // POST always creates a new row; IDs are assigned by the database.
+        cliente.setId(null);
         try {
             return clienteDao.save(cliente);
         } catch (DataIntegrityViolationException ex) {

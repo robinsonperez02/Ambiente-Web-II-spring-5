@@ -82,6 +82,7 @@ class ClienteServiceImplTest {
         Cliente resultado = clienteService.save(cliente);
 
         assertThat(resultado).isSameAs(cliente);
+        assertThat(resultado.getId()).isNull();
         verify(clienteDao).save(cliente);
     }
 

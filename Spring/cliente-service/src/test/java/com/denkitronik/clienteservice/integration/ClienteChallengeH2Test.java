@@ -32,6 +32,9 @@ class ClienteChallengeH2Test {
 
     @Test
     void flujoCrearConsultarActualizarYEliminarClienteConH2() {
+        assertThat(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM clientes", Long.class))
+                .isZero();
+
         String suffix = UUID.randomUUID().toString();
         String regionName = "Challenge " + suffix;
         String email = "challenge-" + suffix + "@example.test";
@@ -45,6 +48,7 @@ class ClienteChallengeH2Test {
                 regionName);
 
         Map<String, Object> cliente = Map.of(
+                "id", 999L,
                 "nombre", "Challenge",
                 "apellido", "Original",
                 "email", email,
@@ -55,6 +59,7 @@ class ClienteChallengeH2Test {
         assertThat(creado.getBody()).isNotNull();
         Object id = creado.getBody().get("id");
         assertThat(id).isNotNull();
+        assertThat(((Number) id).longValue()).isNotEqualTo(999L);
 
         ResponseEntity<Map> consultado = restTemplate.getForEntity(BASE + "/" + id, Map.class);
         assertThat(consultado.getStatusCode()).isEqualTo(HttpStatus.OK);

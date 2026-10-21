@@ -1,0 +1,1 @@
+-- Intentionally empty: prevent production import.sql data from leaking into tests.
